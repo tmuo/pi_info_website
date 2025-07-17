@@ -1,0 +1,24 @@
+# Pi Info Website
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+.env
+.venv/
+venv/
+.DS_Store
+.vscode/
+*.log
+*.pid
+.coverage
+htmlcov/
+.pytest_cache/
+dist/
+build/
+*.egg-info/
+.idea/
+*.swp
+*.swo
+*~

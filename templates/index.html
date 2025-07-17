@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🍓 Pi Info Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1><i class="fas fa-raspberry-pi"></i> Raspberry Pi Dashboard</h1>
+            <div class="status-indicator">
+                <span class="status-dot" id="statusDot"></span>
+                <span id="lastUpdate">Connecting...</span>
+            </div>
+        </header>
+
+        <div class="dashboard">
+            <!-- System Overview -->
+            <div class="card overview">
+                <h2><i class="fas fa-info-circle"></i> System Overview</h2>
+                <div class="system-info">
+                    <div class="info-item">
+                        <span class="label">Hostname:</span>
+                        <span id="hostname">-</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">Uptime:</span>
+                        <span id="uptime">-</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">CPU Cores:</span>
+                        <span id="cpuCores">-</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">Architecture:</span>
+                        <span id="architecture">-</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CPU Usage -->
+            <div class="card">
+                <h2><i class="fas fa-microchip"></i> CPU Usage</h2>
+                <div class="metric-container">
+                    <div class="circular-progress" id="cpuProgress">
+                        <div class="percentage" id="cpuPercentage">0%</div>
+                    </div>
+                    <div class="metric-details">
+                        <div class="detail">
+                            <span class="detail-label">Frequency:</span>
+                            <span id="cpuFreq">- MHz</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Memory Usage -->
+            <div class="card">
+                <h2><i class="fas fa-memory"></i> Memory Usage</h2>
+                <div class="metric-container">
+                    <div class="circular-progress" id="memoryProgress">
+                        <div class="percentage" id="memoryPercentage">0%</div>
+                    </div>
+                    <div class="metric-details">
+                        <div class="detail">
+                            <span class="detail-label">Used:</span>
+                            <span id="memoryUsed">- GB</span>
+                        </div>
+                        <div class="detail">
+                            <span class="detail-label">Total:</span>
+                            <span id="memoryTotal">- GB</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Temperature -->
+            <div class="card">
+                <h2><i class="fas fa-thermometer-half"></i> Temperature</h2>
+                <div class="metric-container">
+                    <div class="circular-progress" id="tempProgress">
+                        <div class="percentage" id="tempValue">0°C</div>
+                    </div>
+                    <div class="metric-details">
+                        <div class="detail">
+                            <span class="detail-label">Fahrenheit:</span>
+                            <span id="tempFahrenheit">- °F</span>
+                        </div>
+                        <div class="detail">
+                            <span class="detail-label">Status:</span>
+                            <span id="tempStatus">Normal</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Storage Usage -->
+            <div class="card">
+                <h2><i class="fas fa-hdd"></i> Storage Usage</h2>
+                <div class="metric-container">
+                    <div class="circular-progress" id="storageProgress">
+                        <div class="percentage" id="storagePercentage">0%</div>
+                    </div>
+                    <div class="metric-details">
+                        <div class="detail">
+                            <span class="detail-label">Used:</span>
+                            <span id="storageUsed">- GB</span>
+                        </div>
+                        <div class="detail">
+                            <span class="detail-label">Free:</span>
+                            <span id="storageFree">- GB</span>
+                        </div>
+                        <div class="detail">
+                            <span class="detail-label">Total:</span>
+                            <span id="storageTotal">- GB</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Network Stats -->
+            <div class="card network">
+                <h2><i class="fas fa-network-wired"></i> Network Statistics</h2>
+                <div class="network-stats">
+                    <div class="stat-item">
+                        <div class="stat-icon upload">
+                            <i class="fas fa-arrow-up"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-label">Bytes Sent</div>
+                            <div class="stat-value" id="bytesSent">- MB</div>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-icon download">
+                            <i class="fas fa-arrow-down"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-label">Bytes Received</div>
+                            <div class="stat-value" id="bytesReceived">- MB</div>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-icon packets">
+                            <i class="fas fa-exchange-alt"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-label">Packets Sent</div>
+                            <div class="stat-value" id="packetsSent">-</div>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-icon packets">
+                            <i class="fas fa-exchange-alt"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-label">Packets Received</div>
+                            <div class="stat-value" id="packetsReceived">-</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Historical Chart -->
+            <div class="card chart-card">
+                <h2><i class="fas fa-chart-line"></i> Performance History</h2>
+                <canvas id="performanceChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>🍓 Raspberry Pi Info Dashboard | Updated every 5 seconds</p>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+</body>
+</html>
