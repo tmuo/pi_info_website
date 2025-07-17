@@ -133,12 +133,21 @@ def api_health():
     })
 
 if __name__ == '__main__':
-    print("🍓 Raspberry Pi Info Website")
-    print("=" * 40)
-    print("Starting server...")
-    print("Access dashboard at: http://localhost:5000")
-    print("API endpoint at: http://localhost:5000/api/system")
-    print("Press Ctrl+C to stop")
-    print("=" * 40)
+    # Check if running as a service or interactively
+    is_service = os.environ.get('INVOCATION_ID') is not None or \
+                os.environ.get('JOURNAL_STREAM') is not None
     
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    if not is_service:
+        # Interactive mode - show startup messages
+        print("🍓 Raspberry Pi Info Website")
+        print("=" * 40)
+        print("Starting server...")
+        print("Access dashboard at: http://localhost:5000")
+        print("API endpoint at: http://localhost:5000/api/system")
+        print("Press Ctrl+C to stop")
+        print("=" * 40)
+    
+    # Disable debug mode when running as a service
+    debug_mode = not is_service
+    
+    app.run(host='0.0.0.0', port=5000, debug=debug_mode)

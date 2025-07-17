@@ -1,0 +1,20 @@
+[Unit]
+Description=Raspberry Pi Info Website Dashboard
+After=network.target
+Wants=network.target
+
+[Service]
+Type=simple
+User=teemu
+Group=teemu
+WorkingDirectory=/home/teemu/Documents/pi_info_website
+Environment=PATH=/home/teemu/Documents/pi_info_website/.venv/bin
+ExecStart=/home/teemu/Documents/pi_info_website/.venv/bin/python app.py
+Restart=always
+RestartSec=15
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=pi-info-dashboard
+
+[Install]
+WantedBy=multi-user.target

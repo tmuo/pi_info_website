@@ -52,6 +52,66 @@ A beautiful, real-time dashboard for monitoring your Raspberry Pi's system resou
    - Local: http://localhost:5000
    - Network: http://[your-pi-ip]:5000
 
+## 🔄 Auto-Start on Boot
+
+To have the dashboard start automatically when your Raspberry Pi boots up:
+
+### Install as System Service (Recommended)
+
+1. **Install the service**
+   ```bash
+   ./install-service.sh
+   ```
+
+2. **Check service status**
+   ```bash
+   ./check-service.sh
+   ```
+
+3. **View service logs**
+   ```bash
+   sudo journalctl -u pi-info-dashboard -f
+   ```
+
+### Service Management Commands
+
+```bash
+# Check status
+sudo systemctl status pi-info-dashboard
+
+# Start/stop/restart
+sudo systemctl start pi-info-dashboard
+sudo systemctl stop pi-info-dashboard
+sudo systemctl restart pi-info-dashboard
+
+# Enable/disable auto-start
+sudo systemctl enable pi-info-dashboard
+sudo systemctl disable pi-info-dashboard
+
+# Uninstall service
+./uninstall-service.sh
+```
+
+### Alternative Methods
+
+**Method 2: Using crontab**
+```bash
+# Edit crontab
+crontab -e
+
+# Add this line
+@reboot cd /home/teemu/Documents/pi_info_website && ./start.sh
+```
+
+**Method 3: Using rc.local**
+```bash
+# Edit rc.local
+sudo nano /etc/rc.local
+
+# Add before 'exit 0'
+cd /home/teemu/Documents/pi_info_website && ./start.sh &
+```
+
 ## 📋 System Requirements
 
 - **Operating System**: Raspberry Pi OS (Raspbian) or any Linux distribution
